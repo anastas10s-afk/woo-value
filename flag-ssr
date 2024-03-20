@@ -1,0 +1,26 @@
+// ==UserScript==
+// @name         Flag high-value SSR @ DOTORG Forums
+// @namespace    http://tampermonkey.net/
+// @version      20240320
+// @description  Help the Hosts card. See: https://ma.tt/2024/01/automattics-big-re-org/
+// @author       Raif D. + Anastasio M.
+// @match        https://wordpress.org/*
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    let str = document.body.textContent;
+    let shop_order = (/shop_order:(.+)/.exec(str)[1]);
+    let shop_subscription = parseInt(shop_order); // assuming subscription count is extracted the same way as shop orders
+
+    if (parseInt(shop_order) >= 1000 || shop_subscription >= 900) {
+        const elem = document.createElement('p');
+        const target = document.querySelector('.page-header');
+        target.parentNode.insertBefore(elem, target);
+
+        elem.innerText = 'Cha Ching 🤑 This thread contains an SSR with '  + shop_order + ' shop orders / subscriptions!';
+        elem.style = "padding: 10px; color: white; background-color: #7F54B3;";
+    }
+})();
